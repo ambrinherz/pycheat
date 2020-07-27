@@ -17,7 +17,11 @@ print_help() {
 	echo -e '\t- type'
 	echo -e '\t- string'
 	echo -e '\t- regex'
-	echo -e '\t format'
+	echo -e '\t- format'
+	echo -e '\t- numbers'
+	echo -e '\t- random'
+	echo -e '\t- combinatronics'
+	echo -e '\t- datetime'
 }
 
 print_list() {
@@ -314,11 +318,150 @@ print_format() {
 	echo ">>> from collections import namedtuple"
 	echo ">>> Person = namedtuple('Person', 'name height')"
 	echo ">>> person = Person('Jean-Luc', 187)"
-	echo ">>> f'{person.height}'"
-	echo "'187'"
 	echo ">>> '{p.height}'.format(p=person)"
 	echo "'187'"
+	echo
+	echo "General Options:"
+	echo "{<el>:<10}                                     # '<el>      '"
+	echo "{<el>:^10}                                     # '   <el>   '"
+	echo "{<el>:>10}                                     # '      <el>'"
+	echo "{<el>:.<10}                                    # '<el>......'"
+	echo "{<el>:<0}                                      # '<el>'"
+	echo
+	echo "Strings:"
+	echo "'!r' calls object's repr() method, instead of str(), to get a string."
+	echo
+	echo "{'abcde'!r:10}                                 # "'abcde'   ""
+	echo "{'abcde':10.3}                                 # 'abc       '"
+	echo "{'abcde':.3}                                   # 'abc'"
+	echo
+	echo "Numbers:"
+	echo "{ 123456:10,}                                  # '   123,456'"
+	echo "{ 123456:10_}                                  # '   123_456'"
+	echo "{ 123456:+10}                                  # '   +123456'"
+	echo "{-123456:=10}                                  # '-   123456'"
+	echo "{ 123456: }                                    # ' 123456'"
+	echo "{-123456: }                                    # '-123456'"
+	echo
+	echo "Floats:"
+	echo "{1.23456:10.3}                                 # '      1.23'"
+	echo "{1.23456:10.3f}                                # '     1.235'"
+	echo "{1.23456:10.3e}                                # ' 1.235e+00'"
+	echo "{1.23456:10.3%}                                # '  123.456%'"
+	echo
+	echo "Ints:"
+	echo "{90:c}                                   # 'Z'"
+	echo "{90:b}                                   # '1011010'"
+	echo "{90:X}                                   # '5A'"
+}
 
+print_numbers() {
+	echo "Numbers:"
+	echo
+	echo "Types:"
+	echo "<int>      = int(<float/str/bool>)       # Or: math.floor(<float>)"
+	echo "<float>    = float(<int/str/bool>)       # Or: <real>e±<int>"
+	echo "<complex>  = complex(real=0, imag=0)     # Or: <real> ± <real>j"
+	echo "<Fraction> = fractions.Fraction(0, 1)    # Or: Fraction(numerator=0, denominator=1)"
+	echo "<Decimal>  = decimal.Decimal(<str/int>)  # Or: Decimal((sign, digits, exponent))"
+	echo
+	echo "'int(<str>)' and 'float(<str>)' raise ValueError on malformed strings."
+	echo "Decimal numbers can be represented exactly, unlike floats where '1.1 + 2.2 != 3.3'."
+	echo "Precision of decimal operations is set with: 'decimal.getcontext().prec = <int>'."
+	echo
+	echo "Basic Functions:"
+	echo "<num> = pow(<num>, <num>)                # Or: <num> ** <num>"
+	echo "<num> = abs(<num>)                       # <float> = abs(<complex>)"
+	echo "<num> = round(<num> [, ±ndigits])        # \`round(126, -1) == 130\`"
+	echo
+	echo "Math:"
+	echo "from math import e, pi, inf, nan, isinf, isnan"
+	echo "from math import cos, acos, sin, asin, tan, atan, degrees, radians"
+	echo "from math import log, log10, log2"
+	echo
+	echo "Statistics:"
+	echo "from statistics import mean, median, variance, stdev, pvariance, pstdev"
+	echo
+	echo "Bin, Hex:"
+	echo "<int>        = ±0b<bin>                  # Or: ±0x<hex>"
+	echo "<int>        = int('±<bin>', 2)          # Or: int('±<hex>', 16)"
+	echo "<int>        = int('±0b<bin>', 0)        # Or: int('±0x<hex>', 0)"
+	echo "'[-]0b<bin>' = bin(<int>)                # Or: hex(<int>)"
+	echo
+	echo "Bitwise Operators:"
+	echo "<int>        = <int> & <int>             # And"
+	echo "<int>        = <int> | <int>             # Or"
+	echo "<int>        = <int> ^ <int>             # Xor (0 if both bits equal)"
+	echo "<int>        = <int> << n_bits           # Shift left (>> for right)"
+	echo "<int>        = ~<int>                    # Not (also: -<int> - 1)"
+}
+
+print_random() {
+	echo "Random:"
+	echo "from random import random, randint, choice, shuffle"
+	echo "<float> = random()"
+	echo "<int>   = randint(from_inclusive, to_inclusive)"
+	echo "<el>    = choice(<list>)"
+	echo "shuffle(<list>)"
+}
+
+print_combinatronics() {
+	echo "Combinatorics:"
+	echo "Every function returns an iterator."
+	echo "If you want to print the iterator, you need to pass it to the list() function first!"
+	echo
+	echo "from itertools import product, combinations, combinations_with_replacement, permutations"
+	echo
+	echo ">>> product([0, 1], repeat=3)"
+	echo "[(0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1),"
+	echo " (1, 0, 0), (1, 0, 1), (1, 1, 0), (1, 1, 1)]"
+	echo
+	echo ">>> product('ab', '12')"
+	echo "[('a', '1'), ('a', '2'),"
+	echo " ('b', '1'), ('b', '2')]"
+	echo
+	echo ">>> combinations('abc', 2)"
+	echo "[('a', 'b'), ('a', 'c'),"
+	echo " ('b', 'c')]"
+	echo
+	echo ">>> combinations_with_replacement('abc', 2)"
+	echo "[('a', 'a'), ('a', 'b'), ('a', 'c'),"
+	echo " ('b', 'b'), ('b', 'c'),"
+	echo " ('c', 'c')]"
+	echo
+	echo ">>> permutations('abc', 2)"
+	echo "[('a', 'b'), ('a', 'c'),"
+	echo " ('b', 'a'), ('b', 'c'),"
+	echo " ('c', 'a'), ('c', 'b')]"
+}
+
+print_datetime() {
+	echo "Datetime:"
+	echo "Module 'datetime' provides 'date' <D>, 'time' <T>, 'datetime' <DT> and 'timedelta' <TD> classes."
+	echo "All are immutable and hashable."
+	echo "Time and datetime objects can be 'aware' <a>, meaning they have defined timezone, or 'naive' <n>, meaning they don't."
+	echo "If object is naive, it is presumed to be in the system's timezone."
+	echo
+	echo "from datetime import date, time, datetime, timedelta"
+	echo "from dateutil.tz import UTC, tzlocal, gettz, resolve_imaginary"
+	echo
+	echo "Constructors:"
+	echo "<D>  = date(year, month, day)"
+	echo "<T>  = time(hour=0, minute=0, second=0, microsecond=0, tzinfo=None, fold=0)"
+	echo "<DT> = datetime(year, month, day, hour=0, minute=0, second=0, ...)"
+	echo "<TD> = timedelta(days=0, seconds=0, microseconds=0, milliseconds=0,"
+	echo "                 minutes=0, hours=0, weeks=0)"
+	echo
+	echo "Use '<D/DT>.weekday()' to get the day of the week (Mon == 0)."
+	echo "'fold=1' means the second pass in case of time jumping back for one hour."
+	echo "'<DTa> = resolve_imaginary(<DTa>)' fixes DTs that fall into the missing hour."
+	echo
+	echo "Now:"
+	echo "<D/DTn>  = D/DT.today()                     # Current local date or naive datetime."
+	echo "<DTn>    = DT.utcnow()                      # Naive datetime from current UTC time."
+	echo "<DTa>    = DT.now(<tzinfo>)                 # Aware datetime from current tz time."
+	echo
+	echo "To extract time use '<DTn>.time()', '<DTa>.time()' or '<DTa>.timetz()'."
 }
 
 print_unknown() {
@@ -365,6 +508,14 @@ run() {
 			print_regex;;
 		format)
 			print_format;;
+		numbers)
+			print_numbers;;
+		random)
+			print_random;;
+		combinatronics)
+			print_combinatronics;;
+		datetime)
+			print_datetime;;
 		*)
 			print_unknown;;
 	esac
