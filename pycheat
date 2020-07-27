@@ -2,6 +2,9 @@
 
 query="$1"
 
+RED='\033[0;31m'
+NC='\033[0m'
+
 print_help() {
 	echo 'Options:'
 	echo -e '\t- list'
@@ -22,10 +25,13 @@ print_help() {
 	echo -e '\t- random'
 	echo -e '\t- combinatronics'
 	echo -e '\t- datetime'
+	echo -e '\t- arguments'
+	echo -e '\t- splat'
+	echo -e '\t- inline'
 }
 
 print_list() {
-	echo "List:"
+	echo -e "${RED}List:${NC}"
 	echo "<list> = <list>[from_inclusive : to_exclusive : ±step_size]"
 	echo
 	echo "<list>.append(<el>)            # Or: <list> += [<el>]"
@@ -53,7 +59,7 @@ print_list() {
 }
 
 print_dict() {
-	echo "Dictionary:"
+	echo -e "${RED}Dictionary:${NC}"
 	echo "<view> = <dict>.keys()                          # Coll. of keys that reflects changes."
 	echo "<view> = <dict>.values()                        # Coll. of values that reflects changes."
 	echo "<view> = <dict>.items()                         # Coll. of key-value tuples that reflects chgs."
@@ -74,7 +80,7 @@ print_dict() {
 }
 
 print_counter() {
-	echo "Counter:"
+	echo -e "${RED}Counter:${NC}"
 	echo ">>> from collections import Counter"
 	echo ">>> colors = ['blue', 'blue', 'blue', 'red', 'red']"
 	echo ">>> counter = Counter(colors)"
@@ -85,7 +91,7 @@ print_counter() {
 }
 
 print_set() {
-	echo "Set:"
+	echo -e "${RED}Set:${NC}"
 	echo "<set> = set()"
 	echo
 	echo "<set>.add(<el>)                                 # Or: <set> |= {<el>}"
@@ -102,7 +108,7 @@ print_set() {
 	echo "<set>.remove(<el>)                              # Raises KeyError if missing."
 	echo "<set>.discard(<el>)                             # Doesn't raise an error."
 	echo
-	echo "Frozen Set:"
+	echo -e "${RED}Frozen Set:${NC}"
     echo "Is immutable and hashable."
     echo "That means it can be used as a key in a dictionary or as an element in a set."
     echo
@@ -110,14 +116,14 @@ print_set() {
 }
 
 print_tuple() {
-	echo "Tuple:"
+	echo -e "${RED}Tuple:${NC}"
 	echo "Tuple is an immutable and hashable list."
 	echo
 	echo "<tuple> = ()"
 	echo "<tuple> = (<el>, )"
 	echo "<tuple> = (<el_1>, <el_2> [, ...])"
 	echo
-	echo "Named Tuple:"
+	echo -e "${RED}Named Tuple:${NC}"
 	echo "Tuple's subclass with named elements"
 	echo
 	echo ">>> from collections import namedtuple"
@@ -135,7 +141,7 @@ print_tuple() {
 }
 
 print_range() {
-	echo "Range:"
+	echo -e "${RED}Range:${NC}"
 	echo "<range> = range(to_exclusive)"
 	echo "<range> = range(from_inclusive, to_exclusive)"
 	echo "<range> = range(from_inclusive, to_exclusive, ±step_size)"
@@ -145,21 +151,21 @@ print_range() {
 }
 
 print_enumerate() {
-	echo "Enumerate:"
+	echo -e "${RED}Enumerate:${NC}"
 	echo "for i, el in enumerate(<collection> [, i_start]):"
 }
 
 print_iter() {
-	echo "Iterator:"
+	echo -e "${RED}Iterator:${NC}"
 	echo "<iter> = iter(<collection>)                 # \`iter(<iter>)\` returns unmodified iterator."
 	echo "<iter> = iter(<function>, to_exclusive)     # A sequence of return values until 'to_exclusive'."
 	echo "<el>   = next(<iter> [, default])           # Raises StopIteration or returns 'default' on end."
 	echo "<list> = list(<iter>)                       # Returns a list of iterator's remaining elements."
-	echo "See also: itertools"
+	echo -e "See also: ${RED}itertools${NC}"
 }
 
 print_itertools() {
-	echo "Itertools:"
+	echo -e "${RED}Itertools:${NC}"
 	echo "from itertools import count, repeat, cycle, chain, islice"
 	echo
 	echo "<iter> = count(start=0, step=1)             # Returns updated value endlessly. Accepts floats."
@@ -174,7 +180,7 @@ print_itertools() {
 }
 
 print_generator() {
-	echo "Generator:"
+	echo -e "${RED}Generator:${NC}"
 	echo "Any function that contains a yield statement returns a generator."
     echo "Generators and iterators are interchangeable."
 	echo
@@ -189,7 +195,7 @@ print_generator() {
 }
 
 print_type() {
-	echo "Type:"
+	echo -e "${RED}Type:${NC}"
     echo "Everything is an object."
     echo "Every object has a type."
     echo "Type and class are synonymous."
@@ -203,7 +209,7 @@ print_type() {
 	echo "Some types do not have built-in names, so they must be imported:"
 	echo "from types import FunctionType, MethodType, LambdaType, GeneratorType"
 	echo
-	echo "Abstract Base Classes:"
+	echo -e "${RED}Abstract Base Classes:${NC}"
 	echo "Each abstract base class specifies a set of virtual subclasses."
 	echo "These classes are then recognized by isinstance() and issubclass() as subclasses of the ABC,"
 	echo "although they are really not."
@@ -236,7 +242,7 @@ print_type() {
 }
 
 print_string() {
-	echo "String:"
+	echo -e "${RED}String:${NC}"
 	echo "<str>  = <str>.strip()                       # Strips all whitespace characters from both ends."
 	echo "<str>  = <str>.strip('<chars>')              # Strips all passed characters from both ends."
 	echo
@@ -260,7 +266,7 @@ print_string() {
 	echo "Also: 'lstrip()', 'rstrip()'."
     echo "Also: 'lower()', 'upper()', 'capitalize()' and 'title()'."
     echo
-    echo "Property Methods:"
+    echo -e "${RED}Property Methods:${NC}"
     echo
     echo "┏━━━━━━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┓"
 	echo "┃               │ [ !#$%…] │ [a-zA-Z] │  [¼½¾]   │  [²³¹]   │  [0-9]   ┃"
@@ -276,7 +282,7 @@ print_string() {
 }
 
 print_regex() {
-	echo "Regex:"
+	echo -e "${RED}Regex:${NC}"
 	echo "import re"
 	echo "<str>   = re.sub(<regex>, new, text, count=0)  # Substitutes all occurrences with 'new'."
 	echo "<list>  = re.findall(<regex>, text)            # Returns all occurrences as strings."
@@ -292,14 +298,14 @@ print_regex() {
     echo "Use r'\1' or '\\\1' for backreference."
     echo "Add '?' after an operator to make it non-greedy."
     echo
-    echo "Match Object:"
+    echo -e "${RED}Match Object:${NC}"
     echo "<str>   = <Match>.group()                      # Returns the whole match. Also group(0)."
 	echo "<str>   = <Match>.group(1)                     # Returns part in the first bracket."
 	echo "<tuple> = <Match>.groups()                     # Returns all bracketed parts."
 	echo "<int>   = <Match>.start()                      # Returns start index of the match."
 	echo "<int>   = <Match>.end()                        # Returns exclusive end index of the match."
 	echo
-	echo "Special Sequences:"
+	echo -e "${RED}Special Sequences:${NC}"
     echo "By default digits, alphanumerics and whitespaces from all alphabets are matched,"
     echo "unless 'flags=re.ASCII' argument is used."
     echo "Use a capital letter for negation."
@@ -310,32 +316,32 @@ print_regex() {
 }
 
 print_format() {
-	echo "Format:"
+	echo -e "${RED}Format:${NC}"
 	echo "<str> = f'{<el_1>}, {<el_2>}'"
 	echo "<str> = '{}, {}'.format(<el_1>, <el_2>)"
 	echo
-	echo "Attributes:"
+	echo -e "${RED}Attributes:${NC}"
 	echo ">>> from collections import namedtuple"
 	echo ">>> Person = namedtuple('Person', 'name height')"
 	echo ">>> person = Person('Jean-Luc', 187)"
 	echo ">>> '{p.height}'.format(p=person)"
 	echo "'187'"
 	echo
-	echo "General Options:"
+	echo -e "${RED}General Options:${NC}"
 	echo "{<el>:<10}                                     # '<el>      '"
 	echo "{<el>:^10}                                     # '   <el>   '"
 	echo "{<el>:>10}                                     # '      <el>'"
 	echo "{<el>:.<10}                                    # '<el>......'"
 	echo "{<el>:<0}                                      # '<el>'"
 	echo
-	echo "Strings:"
+	echo -e "${RED}Strings:${NC}"
 	echo "'!r' calls object's repr() method, instead of str(), to get a string."
 	echo
 	echo "{'abcde'!r:10}                                 # "'abcde'   ""
 	echo "{'abcde':10.3}                                 # 'abc       '"
 	echo "{'abcde':.3}                                   # 'abc'"
 	echo
-	echo "Numbers:"
+	echo -e "${RED}Numbers:${NC}"
 	echo "{ 123456:10,}                                  # '   123,456'"
 	echo "{ 123456:10_}                                  # '   123_456'"
 	echo "{ 123456:+10}                                  # '   +123456'"
@@ -343,22 +349,22 @@ print_format() {
 	echo "{ 123456: }                                    # ' 123456'"
 	echo "{-123456: }                                    # '-123456'"
 	echo
-	echo "Floats:"
+	echo -e "${RED}Floats:${NC}"
 	echo "{1.23456:10.3}                                 # '      1.23'"
 	echo "{1.23456:10.3f}                                # '     1.235'"
 	echo "{1.23456:10.3e}                                # ' 1.235e+00'"
 	echo "{1.23456:10.3%}                                # '  123.456%'"
 	echo
-	echo "Ints:"
+	echo -e "${RED}Ints:${NC}"
 	echo "{90:c}                                   # 'Z'"
 	echo "{90:b}                                   # '1011010'"
 	echo "{90:X}                                   # '5A'"
 }
 
 print_numbers() {
-	echo "Numbers:"
+	echo -e "${RED}Numbers:${NC}"
 	echo
-	echo "Types:"
+	echo -e "${RED}Types:${NC}"
 	echo "<int>      = int(<float/str/bool>)       # Or: math.floor(<float>)"
 	echo "<float>    = float(<int/str/bool>)       # Or: <real>e±<int>"
 	echo "<complex>  = complex(real=0, imag=0)     # Or: <real> ± <real>j"
@@ -369,26 +375,26 @@ print_numbers() {
 	echo "Decimal numbers can be represented exactly, unlike floats where '1.1 + 2.2 != 3.3'."
 	echo "Precision of decimal operations is set with: 'decimal.getcontext().prec = <int>'."
 	echo
-	echo "Basic Functions:"
+	echo -e "${RED}Basic Functions:${NC}"
 	echo "<num> = pow(<num>, <num>)                # Or: <num> ** <num>"
 	echo "<num> = abs(<num>)                       # <float> = abs(<complex>)"
 	echo "<num> = round(<num> [, ±ndigits])        # \`round(126, -1) == 130\`"
 	echo
-	echo "Math:"
+	echo -e "${RED}Math:${NC}"
 	echo "from math import e, pi, inf, nan, isinf, isnan"
 	echo "from math import cos, acos, sin, asin, tan, atan, degrees, radians"
 	echo "from math import log, log10, log2"
 	echo
-	echo "Statistics:"
+	echo -e "${RED}Statistics:${NC}"
 	echo "from statistics import mean, median, variance, stdev, pvariance, pstdev"
 	echo
-	echo "Bin, Hex:"
+	echo -e "${RED}Bin, Hex:${NC}"
 	echo "<int>        = ±0b<bin>                  # Or: ±0x<hex>"
 	echo "<int>        = int('±<bin>', 2)          # Or: int('±<hex>', 16)"
 	echo "<int>        = int('±0b<bin>', 0)        # Or: int('±0x<hex>', 0)"
 	echo "'[-]0b<bin>' = bin(<int>)                # Or: hex(<int>)"
 	echo
-	echo "Bitwise Operators:"
+	echo -e "${RED}Bitwise Operators:${NC}"
 	echo "<int>        = <int> & <int>             # And"
 	echo "<int>        = <int> | <int>             # Or"
 	echo "<int>        = <int> ^ <int>             # Xor (0 if both bits equal)"
@@ -397,7 +403,7 @@ print_numbers() {
 }
 
 print_random() {
-	echo "Random:"
+	echo -e "${RED}Random:${NC}"
 	echo "from random import random, randint, choice, shuffle"
 	echo "<float> = random()"
 	echo "<int>   = randint(from_inclusive, to_inclusive)"
@@ -406,7 +412,7 @@ print_random() {
 }
 
 print_combinatronics() {
-	echo "Combinatorics:"
+	echo -e "${RED}Combinatorics:${NC}"
 	echo "Every function returns an iterator."
 	echo "If you want to print the iterator, you need to pass it to the list() function first!"
 	echo
@@ -436,7 +442,7 @@ print_combinatronics() {
 }
 
 print_datetime() {
-	echo "Datetime:"
+	echo -e "${RED}Datetime:${NC}"
 	echo "Module 'datetime' provides 'date' <D>, 'time' <T>, 'datetime' <DT> and 'timedelta' <TD> classes."
 	echo "All are immutable and hashable."
 	echo "Time and datetime objects can be 'aware' <a>, meaning they have defined timezone, or 'naive' <n>, meaning they don't."
@@ -445,7 +451,7 @@ print_datetime() {
 	echo "from datetime import date, time, datetime, timedelta"
 	echo "from dateutil.tz import UTC, tzlocal, gettz, resolve_imaginary"
 	echo
-	echo "Constructors:"
+	echo -e "${RED}Constructors:${NC}"
 	echo "<D>  = date(year, month, day)"
 	echo "<T>  = time(hour=0, minute=0, second=0, microsecond=0, tzinfo=None, fold=0)"
 	echo "<DT> = datetime(year, month, day, hour=0, minute=0, second=0, ...)"
@@ -456,12 +462,170 @@ print_datetime() {
 	echo "'fold=1' means the second pass in case of time jumping back for one hour."
 	echo "'<DTa> = resolve_imaginary(<DTa>)' fixes DTs that fall into the missing hour."
 	echo
-	echo "Now:"
+	echo -e "${RED}Now:${NC}"
 	echo "<D/DTn>  = D/DT.today()                     # Current local date or naive datetime."
 	echo "<DTn>    = DT.utcnow()                      # Naive datetime from current UTC time."
 	echo "<DTa>    = DT.now(<tzinfo>)                 # Aware datetime from current tz time."
 	echo
 	echo "To extract time use '<DTn>.time()', '<DTa>.time()' or '<DTa>.timetz()'."
+	echo
+	echo -e "${RED}Timezone:${NC}"
+	echo "<tzinfo> = UTC                              # UTC timezone. London without DST."
+	echo "<tzinfo> = tzlocal()                        # Local timezone. Also gettz()."
+	echo "<tzinfo> = gettz('<Continent>/<City>')      # 'Continent/City_Name' timezone or None."
+	echo "<DTa>    = <DT>.astimezone(<tzinfo>)        # Datetime, converted to passed timezone."
+	echo "<Ta/DTa> = <T/DT>.replace(tzinfo=<tzinfo>)  # Unconverted object with new timezone."
+	echo
+	echo -e "${RED}Encode:${NC}"
+	echo "<D/T/DT> = D/T/DT.fromisoformat('<iso>')    # Object from ISO string. Raises ValueError."
+	echo "<DT>     = DT.strptime(<str>, '<format>')   # Datetime from str, according to format."
+	echo "<D/DTn>  = D/DT.fromordinal(<int>)          # D/DTn from days since Christ, at midnight."
+	echo "<DTn>    = DT.fromtimestamp(<real>)         # Local time DTn from seconds since Epoch."
+	echo "<DTa>    = DT.fromtimestamp(<real>, <tz.>)  # Aware datetime from seconds since Epoch."
+	echo
+	echo "ISO strings come in following forms: 'YYYY-MM-DD', 'HH:MM:SS.ffffff[±<offset>]', or both separated by an arbitrary character."
+	echo "Offset is formatted as: 'HH:MM'."
+	echo "Epoch on Unix systems is: '1970-01-01 00:00 UTC', '1970-01-01 01:00 CET', …"
+	echo
+	echo -e "${RED}Decode:${NC}"
+	echo "<str>    = <D/T/DT>.isoformat(sep='T')      # Also timespec='auto/hours/minutes/seconds'."
+	echo "<str>    = <D/T/DT>.strftime('<format>')    # Custom string representation."
+	echo "<int>    = <D/DT>.toordinal()               # Days since Christ, ignoring time and tz."
+	echo "<float>  = <DTn>.timestamp()                # Seconds since Epoch, from DTn in local tz."
+	echo "<float>  = <DTa>.timestamp()                # Seconds since Epoch, from DTa."
+	echo
+	echo -e "${RED}Format:${NC}"
+	echo ">>> from datetime import datetime"
+	echo ">>> dt = datetime.strptime('2015-05-14 23:39:00.00 +0200', '%Y-%m-%d %H:%M:%S.%f %z')"
+	echo ">>> dt.strftime(\"%A, %dth of %B '%y, %I:%M%p %Z\")"
+	echo "\"Thursday, 14th of May '15, 11:39PM UTC+02:00\""
+	echo
+	echo "When parsing, '%z' also accepts '±HH:MM'."
+	echo "For abbreviated weekday and month use '%a' and '%b'."
+	echo
+	echo -e "${RED}Arithmetics:${NC}"
+	echo "<D/DT>   = <D/DT>   ± <TD>                  # Returned datetime can fall into missing hour."
+	echo "<TD>     = <D/DTn>  - <D/DTn>               # Returns the difference, ignoring time jumps."
+	echo "<TD>     = <DTa>    - <DTa>                 # Ignores time jumps if they share tzinfo object."
+	echo "<TD>     = <DT_UTC> - <DT_UTC>              # Convert DTs to UTC to get the actual delta."
+}
+
+print_arguments() {
+	echo -e "${RED}Arguments:${NC}"
+	echo
+	echo -e "${RED}Inside Function Call:${NC}"
+	echo "<function>(<positional_args>)                  # f(0, 0)"
+	echo "<function>(<keyword_args>)                     # f(x=0, y=0)"
+	echo "<function>(<positional_args>, <keyword_args>)  # f(0, y=0)"
+	echo
+	echo -e "${RED}Inside Function Definition:${NC}"
+	echo "def f(<nondefault_args>):                      # def f(x, y):"
+	echo "def f(<default_args>):                         # def f(x=0, y=0):"
+	echo "def f(<nondefault_args>, <default_args>):      # def f(x, y=0):"
+}
+
+print_splat() {
+	echo -e "${RED}Splat Operator:${NC}"
+	echo
+	echo -e "${RED}Inside Function Call:${NC}"
+	echo "Splat expands a collection into positional arguments,"
+	echo "while splatty-splat expands a dictionary into keyword arguments."
+	echo
+	echo "args   = (1, 2)"
+	echo "kwargs = {'x': 3, 'y': 4, 'z': 5}"
+	echo "func(*args, **kwargs)"
+	echo
+	echo "Is the same as:"
+	echo "func(1, 2, x=3, y=4, z=5)"
+	echo
+	echo -e "${RED}Inside Function Definition:${NC}"
+	echo "Splat combines zero or more positional arguments into a tuple,"
+	echo "while splatty-splat combines zero or more keyword arguments into a dictionary."
+	echo
+	echo "def add(*a):"
+    echo "	return sum(a)"
+    echo
+    echo ">>> add(1, 2, 3)"
+	echo "6"
+	echo
+	echo -e "${RED}Legal argument combinations:${NC}"
+	echo "def f(x, y, z):                # f(x=1, y=2, z=3) | f(1, y=2, z=3) | f(1, 2, z=3) | f(1, 2, 3)"
+	echo "def f(*, x, y, z):             # f(x=1, y=2, z=3)"
+	echo "def f(x, *, y, z):             # f(x=1, y=2, z=3) | f(1, y=2, z=3)"
+	echo "def f(x, y, *, z):             # f(x=1, y=2, z=3) | f(1, y=2, z=3) | f(1, 2, z=3)"
+	echo
+	echo "def f(*args):                  # f(1, 2, 3)"
+	echo "def f(x, *args):               # f(1, 2, 3)"
+	echo "def f(*args, z):               # f(1, 2, z=3)"
+	echo "def f(x, *args, z):            # f(1, 2, z=3)"
+	echo
+	echo "def f(**kwargs):               # f(x=1, y=2, z=3)"
+	echo "def f(x, **kwargs):            # f(x=1, y=2, z=3) | f(1, y=2, z=3)"
+	echo "def f(*, x, **kwargs):         # f(x=1, y=2, z=3)"
+	echo
+	echo "def f(*args, **kwargs):        # f(x=1, y=2, z=3) | f(1, y=2, z=3) | f(1, 2, z=3) | f(1, 2, 3)"
+	echo "def f(x, *args, **kwargs):     # f(x=1, y=2, z=3) | f(1, y=2, z=3) | f(1, 2, z=3) | f(1, 2, 3)"
+	echo "def f(*args, y, **kwargs):     # f(x=1, y=2, z=3) | f(1, y=2, z=3)"
+	echo "def f(x, *args, z, **kwargs):  # f(x=1, y=2, z=3) | f(1, y=2, z=3) | f(1, 2, z=3)"
+	echo
+	echo -e "${RED}Other Uses:${NC}"
+	echo "<list>  = [*<collection> [, ...]]"
+	echo "<set>   = {*<collection> [, ...]}"
+	echo "<tuple> = (*<collection>, [...])"
+	echo "<dict>  = {**<dict> [, ...]}"
+	echo
+	echo "head, *body, tail = <collection>"
+}
+
+print_inline() {
+	echo -e "${RED}Inline:${NC}"
+	echo
+	echo -e "${RED}Lambda:${NC}"
+	echo "<function> = lambda: <return_value>"
+	echo "<function> = lambda <argument_1>, <argument_2>: <return_value>"
+	echo
+	echo -e "${RED}Comprehensions:${NC}"
+	echo "<list> = [i+1 for i in range(10)]                   # [1, 2, ..., 10]"
+	echo "<set>  = {i for i in range(10) if i > 5}            # {6, 7, 8, 9}"
+	echo "<iter> = (i+5 for i in range(10))                   # (5, 6, ..., 14)"
+	echo "<dict> = {i: i*2 for i in range(10)}                # {0: 0, 1: 2, ..., 9: 18}"
+	echo
+	echo "out = [i+j for i in range(10) for j in range(10)]"
+	echo
+	echo "Is the same as:"
+	echo "out = []"
+	echo "for i in range(10):"
+	echo "    for j in range(10):"
+	echo "        out.append(i+j)"
+	echo
+	echo -e "${RED}Map, Filter, Reduce:${NC}"
+	echo "from functools import reduce"
+	echo "<iter> = map(lambda x: x + 1, range(10))            # (1, 2, ..., 10)"
+	echo "<iter> = filter(lambda x: x > 5, range(10))         # (6, 7, 8, 9)"
+	echo "<obj>  = reduce(lambda out, x: out + x, range(10))  # 45"
+	echo
+	echo -e "${RED}Any, All:${NC}"
+	echo "<bool> = any(<collection>)                          # False if empty."
+	echo "<bool> = all(el[1] for el in <collection>)          # True if empty."
+	echo
+	echo "If - Else:"
+	echo "<obj> = <expression_if_true> if <condition> else <expression_if_false>"
+	echo
+	echo ">>> [a if a else 'zero' for a in (0, 1, 2, 3)]"
+	echo "['zero', 1, 2, 3]"
+	echo
+	echo -e "${RED}Namedtuple, Enum, Dataclass:${NC}"
+	echo "from collections import namedtuple"
+	echo "Point     = namedtuple('Point', 'x y')"
+	echo "point     = Point(0, 0)"
+	echo
+	echo "from enum import Enum"
+	echo "Direction = Enum('Direction', 'n e s w')"
+	echo "direction = Direction.n"
+	echo
+	echo "from dataclasses import make_dataclass"
+	echo "Creature  = make_dataclass('Creature', ['location', 'direction'])"
+	echo "creature  = Creature(Point(0, 0), Direction.n)"
 }
 
 print_unknown() {
@@ -516,6 +680,12 @@ run() {
 			print_combinatronics;;
 		datetime)
 			print_datetime;;
+		arguments)
+			print_arguments;;
+		splat)
+			print_splat;;
+		inline)
+			print_inline;;
 		*)
 			print_unknown;;
 	esac
