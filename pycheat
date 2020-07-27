@@ -1,0 +1,373 @@
+#! /bin/bash
+
+query="$1"
+
+print_help() {
+	echo 'Options:'
+	echo -e '\t- list'
+	echo -e '\t- dict'
+	echo -e '\t- counter'
+	echo -e '\t- set'
+	echo -e '\t- tuple'
+	echo -e '\t- range'
+	echo -e '\t- enumerate'
+	echo -e '\t- iter'
+	echo -e '\t- itertools'
+	echo -e '\t- generator'
+	echo -e '\t- type'
+	echo -e '\t- string'
+	echo -e '\t- regex'
+	echo -e '\t format'
+}
+
+print_list() {
+	echo "List:"
+	echo "<list> = <list>[from_inclusive : to_exclusive : ±step_size]"
+	echo
+	echo "<list>.append(<el>)            # Or: <list> += [<el>]"
+	echo "<list>.extend(<collection>)    # Or: <list> += <collection>"
+	echo
+	echo "<list>.sort()"
+	echo "<list>.reverse()"
+	echo "<list> = sorted(<collection>)"
+	echo "<iter> = reversed(<list>)"
+	echo
+	echo "sum_of_elements  = sum(<collection>)"
+	echo "elementwise_sum  = [sum(pair) for pair in zip(list_a, list_b)]"
+	echo "sorted_by_second = sorted(<collection>, key=lambda el: el[1])"
+	echo "sorted_by_both   = sorted(<collection>, key=lambda el: (el[1], el[0]))"
+	echo "flatter_list     = list(itertools.chain.from_iterable(<list>))"
+	echo "product_of_elems = functools.reduce(lambda out, el: out * el, <collection>)"
+	echo "list_of_chars    = list(<str>)"
+	echo
+	echo "<int> = <list>.count(<el>)     # Returns number of occurrences. Also works on strings."
+	echo "index = <list>.index(<el>)     # Returns index of first occurrence or raises ValueError."
+	echo "<list>.insert(index, <el>)     # Inserts item at index and moves the rest to the right."
+	echo "<el> = <list>.pop([index])     # Removes and returns item at index or from the end."
+	echo "<list>.remove(<el>)            # Removes first occurrence of item or raises ValueError."
+	echo "<list>.clear()                 # Removes all items. Also works on dictionary and set."
+}
+
+print_dict() {
+	echo "Dictionary:"
+	echo "<view> = <dict>.keys()                          # Coll. of keys that reflects changes."
+	echo "<view> = <dict>.values()                        # Coll. of values that reflects changes."
+	echo "<view> = <dict>.items()                         # Coll. of key-value tuples that reflects chgs."
+	echo
+	echo "value  = <dict>.get(key, default=None)          # Returns default if key is missing."
+	echo "value  = <dict>.setdefault(key, default=None)   # Returns and writes default if key is missing."
+	echo "<dict> = collections.defaultdict(<type>)        # Creates a dict with default value of type."
+	echo "<dict> = collections.defaultdict(lambda: 1)     # Creates a dict with default value 1."
+	echo
+	echo "<dict> = dict(<collection>)                     # Creates a dict from coll. of key-value pairs."
+	echo "<dict> = dict(zip(keys, values))                # Creates a dict from two collections."
+	echo "<dict> = dict.fromkeys(keys [, value])          # Creates a dict from collection of keys."
+	echo
+	echo "<dict>.update(<dict>)                           # Adds items. Replaces ones with matching keys."
+	echo "value = <dict>.pop(key)                         # Removes item or raises KeyError."
+	echo "{k for k, v in <dict>.items() if v == value}    # Returns set of keys that point to the value."
+	echo "{k: v for k, v in <dict>.items() if k in keys}  # Returns a dictionary, filtered by keys."
+}
+
+print_counter() {
+	echo "Counter:"
+	echo ">>> from collections import Counter"
+	echo ">>> colors = ['blue', 'blue', 'blue', 'red', 'red']"
+	echo ">>> counter = Counter(colors)"
+	echo ">>> counter['yellow'] += 1"
+	echo "Counter({'blue': 3, 'red': 2, 'yellow': 1})"
+	echo ">>> counter.most_common()[0]"
+	echo "('blue', 3)"
+}
+
+print_set() {
+	echo "Set:"
+	echo "<set> = set()"
+	echo
+	echo "<set>.add(<el>)                                 # Or: <set> |= {<el>}"
+	echo "<set>.update(<collection>)                      # Or: <set> |= <set>"
+	echo
+	echo "<set>  = <set>.union(<coll.>)                   # Or: <set> | <set>"
+	echo "<set>  = <set>.intersection(<coll.>)            # Or: <set> & <set>"
+	echo "<set>  = <set>.difference(<coll.>)              # Or: <set> - <set>"
+	echo "<set>  = <set>.symmetric_difference(<coll.>)    # Or: <set> ^ <set>"
+	echo "<bool> = <set>.issubset(<coll.>)                # Or: <set> <= <set>"
+	echo "<bool> = <set>.issuperset(<coll.>)              # Or: <set> >= <set>"
+	echo
+	echo "<el> = <set>.pop()                              # Raises KeyError if empty."
+	echo "<set>.remove(<el>)                              # Raises KeyError if missing."
+	echo "<set>.discard(<el>)                             # Doesn't raise an error."
+	echo
+	echo "Frozen Set:"
+    echo "Is immutable and hashable."
+    echo "That means it can be used as a key in a dictionary or as an element in a set."
+    echo
+	echo "<frozenset> = frozenset(<collection>)"
+}
+
+print_tuple() {
+	echo "Tuple:"
+	echo "Tuple is an immutable and hashable list."
+	echo
+	echo "<tuple> = ()"
+	echo "<tuple> = (<el>, )"
+	echo "<tuple> = (<el_1>, <el_2> [, ...])"
+	echo
+	echo "Named Tuple:"
+	echo "Tuple's subclass with named elements"
+	echo
+	echo ">>> from collections import namedtuple"
+	echo ">>> Point = namedtuple('Point', 'x y')"
+	echo ">>> p = Point(1, y=2)"
+	echo "Point(x=1, y=2)"
+	echo ">>> p[0]"
+	echo "1"
+	echo ">>> p.x"
+	echo "1"
+	echo ">>> getattr(p, 'y')"
+	echo "2"
+	echo ">>> p._fields  # Or: Point._fields"
+	echo "('x', 'y')"
+}
+
+print_range() {
+	echo "Range:"
+	echo "<range> = range(to_exclusive)"
+	echo "<range> = range(from_inclusive, to_exclusive)"
+	echo "<range> = range(from_inclusive, to_exclusive, ±step_size)"
+	echo
+	echo "from_inclusive = <range>.start"
+	echo "to_exclusive   = <range>.stop"
+}
+
+print_enumerate() {
+	echo "Enumerate:"
+	echo "for i, el in enumerate(<collection> [, i_start]):"
+}
+
+print_iter() {
+	echo "Iterator:"
+	echo "<iter> = iter(<collection>)                 # \`iter(<iter>)\` returns unmodified iterator."
+	echo "<iter> = iter(<function>, to_exclusive)     # A sequence of return values until 'to_exclusive'."
+	echo "<el>   = next(<iter> [, default])           # Raises StopIteration or returns 'default' on end."
+	echo "<list> = list(<iter>)                       # Returns a list of iterator's remaining elements."
+	echo "See also: itertools"
+}
+
+print_itertools() {
+	echo "Itertools:"
+	echo "from itertools import count, repeat, cycle, chain, islice"
+	echo
+	echo "<iter> = count(start=0, step=1)             # Returns updated value endlessly. Accepts floats."
+	echo "<iter> = repeat(<el> [, times])             # Returns element endlessly or 'times' times."
+	echo "<iter> = cycle(<collection>)                # Repeats the sequence endlessly."
+	echo
+	echo "<iter> = chain(<coll_1>, <coll_2> [, ...])  # Empties collections in order."
+	echo "<iter> = chain.from_iterable(<collection>)  # Empties collections inside a collection in order."
+	echo
+	echo "<iter> = islice(<collection>, to_exclusive)"
+	echo "<iter> = islice(<collection>, from_inclusive, to_exclusive [, +step_size])"
+}
+
+print_generator() {
+	echo "Generator:"
+	echo "Any function that contains a yield statement returns a generator."
+    echo "Generators and iterators are interchangeable."
+	echo
+	echo "def count(start, step):"
+	echo "    while True:"
+	echo "        yield start"
+	echo "        start += step"
+	echo
+	echo ">>> counter = count(10, 2)"
+	echo ">>> next(counter), next(counter), next(counter)"
+	echo "(10, 12, 14)"
+}
+
+print_type() {
+	echo "Type:"
+    echo "Everything is an object."
+    echo "Every object has a type."
+    echo "Type and class are synonymous."
+    echo
+    echo "<type> = type(<el>)                          # Or: <el>.__class__"
+	echo "<bool> = isinstance(<el>, <type>)            # Or: issubclass(type(<el>), <type>)"
+	echo
+	echo ">>> type('a'), 'a'.__class__, str"
+	echo "(<class 'str'>, <class 'str'>, <class 'str'>)"
+	echo
+	echo "Some types do not have built-in names, so they must be imported:"
+	echo "from types import FunctionType, MethodType, LambdaType, GeneratorType"
+	echo
+	echo "Abstract Base Classes:"
+	echo "Each abstract base class specifies a set of virtual subclasses."
+	echo "These classes are then recognized by isinstance() and issubclass() as subclasses of the ABC,"
+	echo "although they are really not."
+	echo
+	echo ">>> from collections.abc import Sequence, Collection, Iterable"
+	echo ">>> isinstance([1, 2, 3], Iterable)"
+	echo "True"
+	echo
+	echo "┏━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━━━┯━━━━━━━━━━━━┯━━━━━━━━━━━━┓"
+	echo "┃                  │  Sequence  │ Collection │  Iterable  ┃"
+	echo "┠──────────────────┼────────────┼────────────┼────────────┨"
+	echo "┃ list, range, str │     ✓      │     ✓      │     ✓      ┃"
+	echo "┃ dict, set        │            │     ✓      │     ✓      ┃"
+	echo "┃ iter             │            │            │     ✓      ┃"
+	echo "┗━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━━━┷━━━━━━━━━━━━┷━━━━━━━━━━━━┛"
+	echo
+	echo ">>> from numbers import Integral, Rational, Real, Complex, Number"
+	echo ">>> isinstance(123, Number)"
+	echo "True"
+	echo
+	echo "┏━━━━━━━━━━━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┓"
+	echo "┃                    │ Integral │ Rational │   Real   │ Complex  │  Number  ┃"
+	echo "┠────────────────────┼──────────┼──────────┼──────────┼──────────┼──────────┨"
+	echo "┃ int                │    ✓     │    ✓     │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ fractions.Fraction │          │    ✓     │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ float              │          │          │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ complex            │          │          │          │    ✓     │    ✓     ┃"
+	echo "┃ decimal.Decimal    │          │          │          │          │    ✓     ┃"
+	echo "┗━━━━━━━━━━━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┛"
+}
+
+print_string() {
+	echo "String:"
+	echo "<str>  = <str>.strip()                       # Strips all whitespace characters from both ends."
+	echo "<str>  = <str>.strip('<chars>')              # Strips all passed characters from both ends."
+	echo
+	echo "<list> = <str>.split()                       # Splits on one or more whitespace characters."
+	echo "<list> = <str>.split(sep=None, maxsplit=-1)  # Splits on 'sep' str at most 'maxsplit' times."
+	echo "<list> = <str>.splitlines(keepends=False)    # Splits on \n,\r,\r\n. Keeps them if 'keepends'."
+	echo "<str>  = <str>.join(<coll_of_strings>)       # Joins elements using string as separator."
+	echo
+	echo "<bool> = <sub_str> in <str>                  # Checks if string contains a substring."
+	echo "<bool> = <str>.startswith(<sub_str>)         # Pass tuple of strings for multiple options."
+	echo "<bool> = <str>.endswith(<sub_str>)           # Pass tuple of strings for multiple options."
+	echo "<int>  = <str>.find(<sub_str>)               # Returns start index of first match or -1."
+	echo "<int>  = <str>.index(<sub_str>)              # Same but raises ValueError if missing."
+	echo
+	echo "<str>  = <str>.replace(old, new [, count])   # Replaces 'old' with 'new' at most 'count' times."
+	echo "<str>  = <str>.translate(<table>)            # Use \`str.maketrans(<dict>)\` to generate table."
+	echo
+	echo "<str>  = chr(<int>)                          # Converts int to Unicode char."
+	echo "<int>  = ord(<str>)                          # Converts Unicode char to int."
+	echo
+	echo "Also: 'lstrip()', 'rstrip()'."
+    echo "Also: 'lower()', 'upper()', 'capitalize()' and 'title()'."
+    echo
+    echo "Property Methods:"
+    echo
+    echo "┏━━━━━━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┯━━━━━━━━━━┓"
+	echo "┃               │ [ !#$%…] │ [a-zA-Z] │  [¼½¾]   │  [²³¹]   │  [0-9]   ┃"
+	echo "┠───────────────┼──────────┼──────────┼──────────┼──────────┼──────────┨"
+	echo "┃ isprintable() │    ✓     │    ✓     │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ isalnum()     │          │    ✓     │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ isnumeric()   │          │          │    ✓     │    ✓     │    ✓     ┃"
+	echo "┃ isdigit()     │          │          │          │    ✓     │    ✓     ┃"
+	echo "┃ isdecimal()   │          │          │          │          │    ✓     ┃"
+	echo "┗━━━━━━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┷━━━━━━━━━━┛"
+	echo
+	echo "Also: 'isspace()' checks for '[ \t\n\r\f\v…]'."
+}
+
+print_regex() {
+	echo "Regex:"
+	echo "import re"
+	echo "<str>   = re.sub(<regex>, new, text, count=0)  # Substitutes all occurrences with 'new'."
+	echo "<list>  = re.findall(<regex>, text)            # Returns all occurrences as strings."
+	echo "<list>  = re.split(<regex>, text, maxsplit=0)  # Use brackets in regex to include the matches."
+	echo "<Match> = re.search(<regex>, text)             # Searches for first occurrence of the pattern."
+	echo "<Match> = re.match(<regex>, text)              # Searches only at the beginning of the text."
+	echo "<iter>  = re.finditer(<regex>, text)           # Returns all occurrences as match objects."
+	echo
+    echo "search() and match() return None if they can't find a match."
+    echo "Argument 'flags=re.IGNORECASE' can be used with all functions."
+    echo "Argument 'flags=re.MULTILINE' makes '^' and '$' match the start/end of each line."
+    echo "Argument 'flags=re.DOTALL' makes dot also accept the '\n'."
+    echo "Use r'\1' or '\\\1' for backreference."
+    echo "Add '?' after an operator to make it non-greedy."
+    echo
+    echo "Match Object:"
+    echo "<str>   = <Match>.group()                      # Returns the whole match. Also group(0)."
+	echo "<str>   = <Match>.group(1)                     # Returns part in the first bracket."
+	echo "<tuple> = <Match>.groups()                     # Returns all bracketed parts."
+	echo "<int>   = <Match>.start()                      # Returns start index of the match."
+	echo "<int>   = <Match>.end()                        # Returns exclusive end index of the match."
+	echo
+	echo "Special Sequences:"
+    echo "By default digits, alphanumerics and whitespaces from all alphabets are matched,"
+    echo "unless 'flags=re.ASCII' argument is used."
+    echo "Use a capital letter for negation."
+    echo
+    echo "'\d' == '[0-9]'                                # Matches any digit."
+	echo "'\w' == '[a-zA-Z0-9_]'                         # Matches any alphanumeric."
+	echo "'\s' == '[ \t\n\r\f\v]'                        # Matches any whitespace."
+}
+
+print_format() {
+	echo "Format:"
+	echo "<str> = f'{<el_1>}, {<el_2>}'"
+	echo "<str> = '{}, {}'.format(<el_1>, <el_2>)"
+	echo
+	echo "Attributes:"
+	echo ">>> from collections import namedtuple"
+	echo ">>> Person = namedtuple('Person', 'name height')"
+	echo ">>> person = Person('Jean-Luc', 187)"
+	echo ">>> f'{person.height}'"
+	echo "'187'"
+	echo ">>> '{p.height}'.format(p=person)"
+	echo "'187'"
+
+}
+
+print_unknown() {
+	echo 'Unknown query'
+}
+
+run() {
+	if [ -z "$query" ]; then
+		echo 'Missing query argument'
+		echo 'Usage: pycheat <query>'
+		exit 1
+
+	elif [ $query == '-h' ]; then
+		print_help
+		exit 0
+	fi
+
+	case "$query" in
+		list)
+			print_list;;
+		dict)
+			print_dict;;
+		counter)
+			print_counter;;
+		set)
+			print_set;;
+		tuple)
+			print_tuple;;
+		range)
+			print_range;;
+		enumerate)
+			print_enumerate;;
+		iter)
+			print_iter;;
+		itertools)
+			print_itertools;;
+		generator)
+			print_generator;;
+		type)
+			print_type;;
+		string)
+			print_string;;
+		regex)
+			print_regex;;
+		format)
+			print_format;;
+		*)
+			print_unknown;;
+	esac
+}
+
+run
