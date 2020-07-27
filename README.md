@@ -1,5 +1,15 @@
 # pycheat
 
+Usage:
+
+```
+pycheat list
+```
+
+Output:
+
+![header image](https://raw.github.com/lodenrogue/pycheat/master/result.jpg)
+
 Help usage:
 
 ```
@@ -32,13 +42,3 @@ Options:
 	- inline
   ...
 ```
-
-Usage:
-
-```
-pycheat list
-```
-
-Output:
-
-![header image](https://raw.github.com/lodenrogue/pycheat/master/result.jpg)
