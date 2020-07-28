@@ -44,5 +44,6 @@ Options:
 	- arguments
 	- splat
 	- inline
+	- closure
   ...
 ```
