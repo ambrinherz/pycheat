@@ -28,6 +28,7 @@ print_help() {
 	echo -e '\t- arguments'
 	echo -e '\t- splat'
 	echo -e '\t- inline'
+	echo -e '\t- closure'
 }
 
 print_list() {
@@ -628,6 +629,55 @@ print_inline() {
 	echo "creature  = Creature(Point(0, 0), Direction.n)"
 }
 
+print_closure() {
+	echo -e "${RED}Closure:${NC}"
+	echo "We have a closure in Python when:"
+	echo "A nested function references a value of its enclosing function and then"
+	echo "the enclosing function returns the nested function."
+	echo
+	echo "def get_multiplier(a):"
+	echo "    def out(b):"
+	echo "        return a * b"
+	echo "    return out"
+	echo
+	echo ">>> multiply_by_3 = get_multiplier(3)"
+	echo ">>> multiply_by_3(10)"
+	echo "30"
+	echo
+	echo "If multiple nested functions within enclosing function reference the same value, that value gets shared."
+	echo "To dynamically access function's first free variable use '<function>.__closure__[0].cell_contents'."
+	echo
+	echo -e "${RED}Partial:${NC}"
+	echo "from functools import partial"
+	echo "<function> = partial(<function> [, <arg_1>, <arg_2>, ...])"
+	echo
+	echo ">>> import operator as op"
+	echo ">>> multiply_by_3 = partial(op.mul, 3)"
+	echo ">>> multiply_by_3(10)"
+	echo "30"
+	echo
+	echo "Partial is also useful in cases when function needs to be passed as an argument,"
+	echo "because it enables us to set its arguments beforehand."
+	echo "A few examples being: 'defaultdict(<function>)', 'iter(<function>, to_exclusive)'"
+	echo "and dataclass's 'field(default_factory=<function>)'."
+	echo
+	echo -e "${RED}Non-Local:${NC}"
+	echo "If variable is being assigned to anywhere in the scope, it is regarded as a local variable,"
+	echo "unless it is declared as a 'global' or a 'nonlocal'."
+	echo
+	echo "def get_counter():"
+	echo "    i = 0"
+	echo "    def out():"
+	echo "        nonlocal i"
+	echo "        i += 1"
+	echo "        return i"
+	echo "    return out"
+	echo
+	echo ">>> counter = get_counter()"
+	echo ">>> counter(), counter(), counter()"
+	echo "(1, 2, 3)"
+}
+
 print_unknown() {
 	echo 'Unknown query'
 }
@@ -686,6 +736,8 @@ run() {
 			print_splat;;
 		inline)
 			print_inline;;
+		closure)
+			print_closure;;
 		*)
 			print_unknown;;
 	esac
