@@ -1,22 +1,26 @@
 # pycheat
 
-Usage:
+Python cheatsheet for the command line
+
+Based on the collection efforts by gt076: https://github.com/gto76/python-cheatsheet
+
+#### Usage:
 
 ```
 pycheat list
 ```
 
-Output:
+#### Output:
 
 ![header image](https://raw.github.com/lodenrogue/pycheat/master/result.jpg)
 
-Help usage:
+#### Help usage:
 
 ```
 pycheat -h
 ```
 
-Output:
+#### Output:
 ```
 Options:
 	- list
