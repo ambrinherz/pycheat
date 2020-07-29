@@ -50,4 +50,4 @@ Options:
 
 #### Installation:
 
-Add pycheat to a folder in your PATH. Example: /usr/local/bin
+Add pycheat to a directory in your PATH. Example: /usr/local/bin
