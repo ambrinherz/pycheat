@@ -4,7 +4,7 @@ Python cheatsheet for the command line
 
 Based on the collection efforts by gt076: https://github.com/gto76/python-cheatsheet
 
-#### Usage:
+#### Usage Example:
 
 ```
 pycheat list
