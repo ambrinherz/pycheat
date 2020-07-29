@@ -47,3 +47,7 @@ Options:
 	- closure
   ...
 ```
+
+#### Installation:
+
+Add pycheat to a folder in your PATH. Example: /usr/local/bin
